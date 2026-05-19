@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sản Phẩm</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <h2>
+                <i class="fa-solid fa-mug-hot"></i>
+                T&C Admin
+            </h2>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a th:href="@{/admin-dashboard}">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="active">
+                    <i class="fa-solid fa-box"></i>
+                    Sản phẩm
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-receipt"></i>
+                    Đơn hàng
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-users"></i>
+                    Khách hàng
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-wrapper">
+
+        <!-- NAVBAR -->
+        <header class="navbar">
+
+            <div class="nav-left">
+
+                <button class="icon-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <input type="text"
+                       placeholder="Tìm sản phẩm..."
+                       class="search-bar">
+
+            </div>
+
+            <div class="nav-right">
+
+                <span class="admin-name">
+                    Admin
+                </span>
+
+                <button class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Thoát
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+        <main class="main-content">
+
+            <div class="table-container">
+                <h3>Danh sách sản phẩm</h3>
+
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ảnh</th>
+                        <th>Tên</th>
+                        <th>Giá</th>
+                        <th>Slug</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="product : ${products}">
+
+                        <td th:text="${product.id}"></td>
+
+                        <td>
+                            <img th:src="${product.imageUrl}"
+                                 width="70">
+                        </td>
+
+                        <td th:text="${product.name}"></td>
+
+                        <td th:text="${product.basePrice}"></td>
+
+                        <td th:text="${product.slug}"></td>
+
+                        <td>
+                            <span th:text="${product.isActive ? 'Hoạt động' : 'Ẩn'}"></span>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script th:src="@{/js/admin-products.js}"></script>
+
+</body>
+</html>
