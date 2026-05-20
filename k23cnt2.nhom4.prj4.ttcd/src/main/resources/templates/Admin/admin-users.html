@@ -9,7 +9,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Quản Lý Sản Phẩm</title>
+    <title>Quản Lý Người Dùng</title>
 
     <link rel="stylesheet"
           th:href="@{/css/admin-dashboard.css}">
@@ -21,7 +21,7 @@
 
 <body>
 
-<th:block th:with="activeMenu='products'">
+<th:block th:with="activeMenu='users'">
 
     <div class="dashboard-container">
 
@@ -37,21 +37,14 @@
             <!-- CONTENT -->
             <main class="main-content">
 
-                <!-- HEADER -->
-                <div class="content-header">
-
-                    <h1>Quản lý sản phẩm</h1>
-
-                </div>
-
-                <!-- ACTION -->
+                <!-- TOP ACTION -->
                 <div class="top-actions">
 
                     <button class="add-btn"
                             onclick="openAddModal()">
 
                         <i class="fa-solid fa-plus"></i>
-                        Thêm sản phẩm
+                        Thêm người dùng
 
                     </button>
 
@@ -60,7 +53,7 @@
                 <!-- TABLE -->
                 <div class="table-container">
 
-                    <h3>Danh sách sản phẩm</h3>
+                    <h3>Danh sách người dùng</h3>
 
                     <table class="data-table">
 
@@ -69,17 +62,11 @@
                         <tr>
 
                             <th>ID</th>
-
-                            <th>Ảnh</th>
-
-                            <th>Tên</th>
-
-                            <th>Giá</th>
-
-                            <th>Slug</th>
-
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Role</th>
                             <th>Trạng thái</th>
-
                             <th>Hành động</th>
 
                         </tr>
@@ -88,53 +75,40 @@
 
                         <tbody>
 
-                        <tr th:each="product : ${products}">
+                        <tr th:each="user : ${users}">
 
-                            <!-- ID -->
-                            <td th:text="${product.id}"></td>
+                            <td th:text="${user.id}"></td>
 
-                            <!-- IMAGE -->
-                            <td>
+                            <td th:text="${user.fullName}"></td>
 
-                                <img th:src="${product.imageUrl}"
-                                     width="70"
-                                     style="border-radius: 8px;">
+                            <td th:text="${user.email}"></td>
 
-                            </td>
+                            <td th:text="${user.phone}"></td>
 
-                            <!-- NAME -->
-                            <td th:text="${product.name}"></td>
+                            <td th:text="${user.role}"></td>
 
-                            <!-- PRICE -->
-                            <td th:text="${product.basePrice}"></td>
-
-                            <!-- SLUG -->
-                            <td th:text="${product.slug}"></td>
-
-                            <!-- STATUS -->
                             <td>
 
                                 <span class="badge"
-                                      th:classappend="${product.isActive} ? 'badge-success' : 'badge-warning'"
-                                      th:text="${product.isActive} ? 'Đang bán' : 'Dừng bán'">
+                                      th:classappend="${user.isActive ? 'badge-success' : 'badge-warning'}"
+                                      th:text="${user.isActive ? 'Hoạt động' : 'Khóa'}">
 
                                 </span>
 
                             </td>
 
-                            <!-- ACTION -->
                             <td>
 
                                 <!-- EDIT -->
                                 <button class="action-btn"
 
                                         th:attr="
-                                            data-id=${product.id},
-                                            data-name=${product.name},
-                                            data-slug=${product.slug},
-                                            data-image=${product.imageUrl},
-                                            data-price=${product.basePrice},
-                                            data-description=${product.description}"
+                                            data-id=${user.id},
+                                            data-fullname=${user.fullName},
+                                            data-email=${user.email},
+                                            data-phone=${user.phone},
+                                            data-role=${user.role},
+                                            data-active=${user.isActive}"
 
                                         onclick="openEditModal(this)">
 
@@ -144,8 +118,7 @@
 
                                 <!-- DELETE -->
                                 <button class="delete-btn"
-
-                                        th:onclick="'deleteProduct(' + ${product.id} + ')'">
+                                        th:onclick="'deleteUser(' + ${user.id} + ')'">
 
                                     <i class="fa-solid fa-trash"></i>
 
@@ -171,7 +144,7 @@
 
 <!-- MODAL -->
 <div class="modal"
-     id="productModal">
+     id="userModal">
 
     <div class="modal-content">
 
@@ -179,9 +152,7 @@
         <div class="modal-header">
 
             <h2 id="modalTitle">
-
-                Thêm sản phẩm
-
+                Thêm người dùng
             </h2>
 
             <span class="close-btn"
@@ -197,69 +168,96 @@
         <div class="modal-body">
 
             <input type="hidden"
-                   id="productId">
+                   id="userId">
 
-            <!-- NAME -->
+            <!-- FULL NAME -->
             <div class="form-group">
 
-                <label>Tên sản phẩm</label>
+                <label>Họ tên</label>
 
                 <input type="text"
-                       id="name"
-                       placeholder="Nhập tên sản phẩm">
+                       id="fullName"
+                       placeholder="Nguyễn Văn A">
 
             </div>
 
-            <!-- SLUG -->
+            <!-- EMAIL -->
             <div class="form-group">
 
-                <label>Slug</label>
+                <label>Email</label>
+
+                <input type="email"
+                       id="email"
+                       placeholder="admin@gmail.com">
+
+            </div>
+
+            <!-- PHONE -->
+            <div class="form-group">
+
+                <label>Số điện thoại</label>
 
                 <input type="text"
-                       id="slug"
-                       placeholder="tra-sua-matcha">
+                       id="phone"
+                       placeholder="0123456789">
 
             </div>
 
-            <!-- IMAGE -->
+            <!-- PASSWORD -->
             <div class="form-group">
 
-                <label>Ảnh URL</label>
+                <label>Mật khẩu</label>
 
-                <input type="text"
-                       id="imageUrl"
-                       placeholder="/images/products/demo.jpg">
+                <input type="password"
+                       id="password"
+                       placeholder="******">
 
             </div>
 
-            <!-- PRICE -->
+            <!-- ROLE -->
             <div class="form-group">
 
-                <label>Giá</label>
+                <label>Vai trò</label>
 
-                <input type="number"
-                       id="price"
-                       placeholder="45000">
+                <select id="role">
+
+                    <option value="ADMIN">
+                        ADMIN
+                    </option>
+
+                    <option value="CUSTOMER">
+                        CUSTOMER
+                    </option>
+
+                </select>
 
             </div>
 
-            <!-- DESCRIPTION -->
+            <!-- ACTIVE -->
             <div class="form-group">
 
-                <label>Mô tả</label>
+                <label>Trạng thái</label>
 
-                <textarea id="description"
-                          rows="4"
-                          placeholder="Mô tả sản phẩm"></textarea>
+                <select id="isActive">
+
+                    <option value="true">
+                        Hoạt động
+                    </option>
+
+                    <option value="false">
+                        Khóa
+                    </option>
+
+                </select>
 
             </div>
 
             <!-- SAVE -->
             <button class="save-btn"
-                    onclick="saveProduct()">
+                    onclick="saveUser()">
 
                 <i class="fa-solid fa-floppy-disk"></i>
-                Lưu sản phẩm
+                Lưu người dùng
 
             </button>
 
@@ -269,8 +267,7 @@
 
 </div>
 
-<script th:src="@{/js/admin-products.js}"></script>
+<script th:src="@{/js/admin-users.js}"></script>
 
 </body>
-
 </html>

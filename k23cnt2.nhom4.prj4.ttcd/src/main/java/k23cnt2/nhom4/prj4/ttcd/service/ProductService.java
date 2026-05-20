@@ -5,10 +5,12 @@ import k23cnt2.nhom4.prj4.ttcd.entity.Product;
 import k23cnt2.nhom4.prj4.ttcd.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductService {
 
     @Autowired
@@ -17,6 +19,7 @@ public class ProductService {
     // ================= HOME =================
 
     public List<ProductDTO> getHomeProducts() {
+
         return productRepository.getProducts();
     }
 
@@ -24,6 +27,7 @@ public class ProductService {
 
     // lấy tất cả sản phẩm
     public List<Product> getAllProducts() {
+
         return productRepository.findAll();
     }
 
@@ -52,7 +56,11 @@ public class ProductService {
         oldProduct.setImageUrl(newProduct.getImageUrl());
         oldProduct.setBasePrice(newProduct.getBasePrice());
         oldProduct.setIsActive(newProduct.getIsActive());
-        oldProduct.setCategory(newProduct.getCategory());
+
+        if (newProduct.getCategory() != null) {
+
+            oldProduct.setCategory(newProduct.getCategory());
+        }
 
         return productRepository.save(oldProduct);
     }
@@ -60,6 +68,8 @@ public class ProductService {
     // xóa sản phẩm
     public void deleteProduct(Integer id) {
 
-        productRepository.deleteById(id);
+        Product product = getProductById(id);
+
+        productRepository.delete(product);
     }
 }

@@ -1,65 +1,105 @@
-const API_URL = "/api/admin/products";
+function openAddModal(){
 
-async function loadProducts() {
+    document.getElementById("modalTitle").innerText =
+        "Thêm sản phẩm";
 
-    try {
+    document.getElementById("productId").value = "";
 
-        const response = await fetch(API_URL);
+    document.getElementById("name").value = "";
+    document.getElementById("slug").value = "";
+    document.getElementById("imageUrl").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("description").value = "";
 
-        const products = await response.json();
+    document.getElementById("productModal").style.display =
+        "flex";
+}
 
-        const tableBody =
-            document.getElementById("productTableBody");
+function closeModal(){
 
-        tableBody.innerHTML = "";
+    document.getElementById("productModal").style.display =
+        "none";
+}
 
-        products.forEach(product => {
+async function saveProduct(){
 
-            tableBody.innerHTML += `
-            
-                <tr>
-                
-                    <td>${product.id}</td>
-                    
-                    <td>
-                        <img 
-                            src="${product.imageUrl}"
-                            class="product-image"
-                        />
-                    </td>
-                    
-                    <td>${product.name}</td>
-                    
-                    <td>
-                        ${product.basePrice.toLocaleString()} đ
-                    </td>
-                    
-                    <td>
-                    
-                        <button class="edit-btn">
-                            Sửa
-                        </button>
-                        
-                        <button 
-                            class="delete-btn"
-                            onclick="deleteProduct(${product.id})"
-                        >
-                            Xóa
-                        </button>
-                        
-                    </td>
-                    
-                </tr>
-            
-            `;
-        });
+    const id =
+        document.getElementById("productId").value;
 
-    } catch (error) {
+    const product = {
 
-        console.error(error);
+        name:
+        document.getElementById("name").value,
 
+        slug:
+        document.getElementById("slug").value,
+
+        imageUrl:
+        document.getElementById("imageUrl").value,
+
+        basePrice:
+        document.getElementById("price").value,
+
+        description:
+        document.getElementById("description").value,
+
+        isActive:true
+    };
+
+    let url = "/api/admin/products";
+    let method = "POST";
+
+    if(id){
+
+        url += "/" + id;
+        method = "PUT";
     }
 
+    await fetch(url, {
+
+        method: method,
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(product)
+    });
+
+    location.reload();
+}
+
+async function editProduct(id){
+
+    const response =
+        await fetch("/api/admin/products/" + id);
+
+    const product =
+        await response.json();
+
+    document.getElementById("modalTitle").innerText =
+        "Sửa sản phẩm";
+
+    document.getElementById("productId").value =
+        product.id;
+
+    document.getElementById("name").value =
+        product.name;
+
+    document.getElementById("slug").value =
+        product.slug;
+
+    document.getElementById("imageUrl").value =
+        product.imageUrl;
+
+    document.getElementById("price").value =
+        product.basePrice;
+
+    document.getElementById("description").value =
+        product.description;
+
+    document.getElementById("productModal").style.display =
+        "flex";
 }
 
 async function deleteProduct(id){
@@ -69,22 +109,10 @@ async function deleteProduct(id){
 
     if(!confirmDelete) return;
 
-    try{
+    await fetch("/api/admin/products/" + id, {
 
-        await fetch(`${API_URL}/${id}`,{
-            method:"DELETE"
-        });
+        method:"DELETE"
+    });
 
-        alert("Xóa thành công!");
-
-        loadProducts();
-
-    }catch(error){
-
-        console.error(error);
-
-    }
-
+    location.reload();
 }
-
-loadProducts();
