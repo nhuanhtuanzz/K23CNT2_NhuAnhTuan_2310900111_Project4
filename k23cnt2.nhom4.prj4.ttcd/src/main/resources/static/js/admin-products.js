@@ -1,4 +1,4 @@
-function openAddModal(){
+function openAddModal() {
 
     document.getElementById("modalTitle").innerText =
         "Thêm sản phẩm";
@@ -6,103 +6,113 @@ function openAddModal(){
     document.getElementById("productId").value = "";
 
     document.getElementById("name").value = "";
+
     document.getElementById("slug").value = "";
-    document.getElementById("imageUrl").value = "";
+
     document.getElementById("price").value = "";
+
     document.getElementById("description").value = "";
+
+    document.getElementById("categoryId").value = "";
 
     document.getElementById("productModal").style.display =
         "flex";
 }
 
-function closeModal(){
+function closeModal() {
 
     document.getElementById("productModal").style.display =
         "none";
 }
 
-async function saveProduct(){
-
-    const id =
-        document.getElementById("productId").value;
-
-    const product = {
-
-        name:
-        document.getElementById("name").value,
-
-        slug:
-        document.getElementById("slug").value,
-
-        imageUrl:
-        document.getElementById("imageUrl").value,
-
-        basePrice:
-        document.getElementById("price").value,
-
-        description:
-        document.getElementById("description").value,
-
-        isActive:true
-    };
-
-    let url = "/api/admin/products";
-    let method = "POST";
-
-    if(id){
-
-        url += "/" + id;
-        method = "PUT";
-    }
-
-    await fetch(url, {
-
-        method: method,
-
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body: JSON.stringify(product)
-    });
-
-    location.reload();
-}
-
-async function editProduct(id){
-
-    const response =
-        await fetch("/api/admin/products/" + id);
-
-    const product =
-        await response.json();
+function openEditModal(button) {
 
     document.getElementById("modalTitle").innerText =
         "Sửa sản phẩm";
 
     document.getElementById("productId").value =
-        product.id;
+        button.dataset.id;
 
     document.getElementById("name").value =
-        product.name;
+        button.dataset.name;
 
     document.getElementById("slug").value =
-        product.slug;
-
-    document.getElementById("imageUrl").value =
-        product.imageUrl;
+        button.dataset.slug;
 
     document.getElementById("price").value =
-        product.basePrice;
+        button.dataset.price;
 
     document.getElementById("description").value =
-        product.description;
+        button.dataset.description;
+
+    document.getElementById("categoryId").value =
+        button.dataset.category;
 
     document.getElementById("productModal").style.display =
         "flex";
 }
 
-async function deleteProduct(id){
+async function saveProduct() {
+
+    const id =
+        document.getElementById("productId").value;
+
+    const formData = new FormData();
+
+    formData.append(
+        "name",
+        document.getElementById("name").value
+    );
+
+    formData.append(
+        "slug",
+        document.getElementById("slug").value
+    );
+
+    formData.append(
+        "price",
+        document.getElementById("price").value
+    );
+
+    formData.append(
+        "description",
+        document.getElementById("description").value
+    );
+
+    formData.append(
+        "categoryId",
+        document.getElementById("categoryId").value
+    );
+
+    const imageFile =
+        document.getElementById("imageFile").files[0];
+
+    if(imageFile){
+
+        formData.append(
+            "imageFile",
+            imageFile
+        );
+    }
+
+    let url = "/admin/products/save";
+
+    if(id){
+
+        url += "/" + id;
+    }
+
+    await fetch(url, {
+
+        method: "POST",
+
+        body: formData
+    });
+
+    location.reload();
+}
+
+async function deleteProduct(id) {
 
     const confirmDelete =
         confirm("Bạn có chắc muốn xóa?");
@@ -111,7 +121,7 @@ async function deleteProduct(id){
 
     await fetch("/api/admin/products/" + id, {
 
-        method:"DELETE"
+        method: "DELETE"
     });
 
     location.reload();

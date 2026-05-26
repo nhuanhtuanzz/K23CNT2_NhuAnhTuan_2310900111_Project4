@@ -74,6 +74,8 @@
 
                             <th>Tên</th>
 
+                            <th>Danh mục</th>
+
                             <th>Giá</th>
 
                             <th>Slug</th>
@@ -97,13 +99,15 @@
                             <td>
 
                                 <img th:src="${product.imageUrl}"
-                                     width="70"
-                                     style="border-radius: 8px;">
+                                     class="product-image">
 
                             </td>
 
                             <!-- NAME -->
                             <td th:text="${product.name}"></td>
+
+                            <!-- CATEGORY -->
+                            <td th:text="${product.category.name}"></td>
 
                             <!-- PRICE -->
                             <td th:text="${product.basePrice}"></td>
@@ -132,9 +136,9 @@
                                             data-id=${product.id},
                                             data-name=${product.name},
                                             data-slug=${product.slug},
-                                            data-image=${product.imageUrl},
                                             data-price=${product.basePrice},
-                                            data-description=${product.description}"
+                                            data-description=${product.description},
+                                            data-category=${product.category.id}"
 
                                         onclick="openEditModal(this)">
 
@@ -210,6 +214,26 @@
 
             </div>
 
+            <!-- CATEGORY -->
+            <div class="form-group">
+
+                <label>Danh mục</label>
+
+                <select id="categoryId">
+
+                    <option value="">
+                        -- Chọn danh mục --
+                    </option>
+
+                    <option th:each="category : ${categories}"
+                            th:value="${category.id}"
+                            th:text="${category.name}">
+                    </option>
+
+                </select>
+
+            </div>
+
             <!-- SLUG -->
             <div class="form-group">
 
@@ -224,11 +248,10 @@
             <!-- IMAGE -->
             <div class="form-group">
 
-                <label>Ảnh URL</label>
+                <label>Ảnh sản phẩm</label>
 
-                <input type="text"
-                       id="imageUrl"
-                       placeholder="/images/products/demo.jpg">
+                <input type="file"
+                       id="imageFile">
 
             </div>
 
