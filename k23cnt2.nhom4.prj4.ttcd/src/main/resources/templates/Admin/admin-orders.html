@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quản Lý Đơn Hàng</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin-dashboard.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<th:block th:with="activeMenu='orders'">
+
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+        <div th:replace="~{Admin/layout/sidebar :: sidebar}"></div>
+
+        <!-- MAIN -->
+        <div class="main-wrapper">
+
+            <!-- NAVBAR -->
+            <div th:replace="~{Admin/layout/navbar :: navbar}"></div>
+
+            <!-- CONTENT -->
+            <main class="main-content">
+
+                <!-- HEADER -->
+                <div class="content-header">
+
+                    <h1>Quản lý đơn hàng</h1>
+
+                </div>
+
+                <!-- TABLE -->
+                <div class="table-container">
+
+                    <h3>Danh sách đơn hàng</h3>
+
+                    <table class="data-table">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Mã đơn</th>
+
+                            <th>Khách hàng</th>
+
+                            <th>Tổng tiền</th>
+
+                            <th>Giảm giá</th>
+
+                            <th>Thanh toán</th>
+
+                            <th>Trạng thái</th>
+
+                            <th>Ngày tạo</th>
+
+                            <th>Hành động</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="order : ${orders}">
+
+                            <!-- ID -->
+                            <td th:text="${order.id}"></td>
+
+                            <!-- ORDER CODE -->
+                            <td th:text="${order.orderCode}"></td>
+
+                            <!-- USER -->
+                            <td th:text="${order.user.fullName}"></td>
+
+                            <!-- TOTAL -->
+                            <td th:text="${#numbers.formatDecimal(order.totalAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
+
+                            <!-- DISCOUNT -->
+                            <td th:text="${#numbers.formatDecimal(order.discountAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
+
+                            <!-- FINAL -->
+                            <td th:text="${#numbers.formatDecimal(order.finalAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
+
+                            <!-- STATUS -->
+                            <td>
+
+                                <span class="badge"
+
+                                      th:classappend="
+                                        ${order.orderStatus.name() == 'PENDING'} ? 'badge-warning' :
+                                        (${order.orderStatus.name() == 'CONFIRMED'} ? 'badge-info' :
+                                        (${order.orderStatus.name() == 'SHIPPING'} ? 'badge-primary' :
+                                        (${order.orderStatus.name() == 'COMPLETED'} ? 'badge-success' :
+                                        'badge-danger')))"
+
+                                      th:text="${order.orderStatus}">
+
+                                </span>
+
+                            </td>
+
+                            <!-- CREATED -->
+                            <td th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+
+                            <!-- ACTION -->
+                            <td>
+
+                                <select class="status-select"
+                                        th:onchange="'updateOrderStatus(' + ${order.id} + ', this.value)'">
+
+                                    <option th:each="status : ${statuses}"
+
+                                            th:value="${status}"
+
+                                            th:text="${status}"
+
+                                            th:selected="${status == order.orderStatus}">
+
+                                    </option>
+
+                                </select>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+</th:block>
+
+<script th:src="@{/js/admin-orders.js}"></script>
+
+</body>
+
+</html>

@@ -19,7 +19,6 @@ public class AdminOrderApiController {
             @PathVariable Long id,
             @RequestParam ENUMS.OrderStatus status
     ) {
-
         return orderService.updateStatus(id, status);
     }
 }

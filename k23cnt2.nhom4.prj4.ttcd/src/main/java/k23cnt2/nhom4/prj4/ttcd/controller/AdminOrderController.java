@@ -21,7 +21,6 @@ public class AdminOrderController {
                 orderService.getAllOrders()
         );
 
-        // gửi enum xuống html
         model.addAttribute(
                 "statuses",
                 ENUMS.OrderStatus.values()
