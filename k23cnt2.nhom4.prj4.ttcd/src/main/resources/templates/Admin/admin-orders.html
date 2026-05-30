@@ -157,7 +157,37 @@
 </th:block>
 
 <script th:src="@{/js/admin-orders.js}"></script>
+<div class="modal"
+     id="orderDetailModal">
 
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                Chi tiết đơn hàng
+            </h2>
+
+            <span class="close-btn"
+                  onclick="closeOrderDetailModal()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div id="orderItemsContainer">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 
 </html>

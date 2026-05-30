@@ -59,32 +59,76 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
 
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
+
     event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email =
+        document.getElementById('email').value;
+
+    const password =
+        document.getElementById('password').value;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ email, password })
-        });
 
-        const data = await response.json();
+        const response =
+            await fetch(`${API_BASE_URL}/login`, {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+
+        const data =
+            await response.json();
 
         if(response.ok) {
 
-            localStorage.setItem("token", data.token);
+            // SAVE TOKEN
+            localStorage.setItem(
+                "token",
+                data.token
+            );
+
+            // SAVE ROLE
+            localStorage.setItem(
+                "role",
+                data.role
+            );
 
             alert(data.message);
 
-            window.location.href = '/admin-dashboard';
+            // REDIRECT BY ROLE
+            if(data.role === "ADMIN"){
+
+                window.location.href =
+                    "/admin-dashboard";
+
+            }else{
+
+                window.location.href =
+                    "/";
+            }
 
         } else {
-            alert(data.message || "Dang nhap that bai")
+
+            alert(
+                data.message ||
+                "Đăng nhập thất bại"
+            );
         }
+
     } catch (error) {
-        console.error("Lỗi thực sự là: ", error);
+
+        console.error(
+            "Lỗi thực sự là: ",
+            error
+        );
     }
 });
