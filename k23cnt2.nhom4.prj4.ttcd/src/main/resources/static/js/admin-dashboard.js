@@ -6,6 +6,7 @@ function toggleAdminMenu() {
         .toggle("show");
 }
 
+
 function handleLogout() {
 
     localStorage.removeItem("token");
@@ -14,9 +15,16 @@ function handleLogout() {
     window.location.href = "/auth";
 }
 
+function toggleProductMenu() {
+
+    document
+        .getElementById("productSubmenu")
+        .classList.toggle("show");
+}
+
 /* click ngoài thì đóng menu */
 
-window.onclick = function(e) {
+window.onclick = function (e) {
 
     if (!e.target.closest(".admin-dropdown")) {
 

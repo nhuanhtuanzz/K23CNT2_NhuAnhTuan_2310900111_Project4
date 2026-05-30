@@ -25,14 +25,63 @@
                     Dashboard
                 </a>
             </li>
-
             <li>
-                <a th:href="@{/admin/products}"
-                   th:classappend="${activeMenu == 'products'} ? 'active'">
 
-                    <i class="fa-solid fa-coffee"></i>
-                    Sản phẩm
+                <a href="#"
+                   onclick="toggleProductMenu()">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    <span>Quản lý sản phẩm</span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
                 </a>
+
+                <ul id="productSubmenu"
+                    class="submenu"
+
+                    th:classappend="
+            ${activeMenu=='products'}
+            or ${activeMenu=='category'}
+            or ${activeMenu=='variant'}
+            or ${activeMenu=='option'}
+            ? 'show'">
+
+                    <li>
+                        <a th:href="@{/admin/categories}"
+                           th:classappend="${activeMenu=='category'} ? 'active'">
+
+                            Danh mục
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/admin/products}"
+                           th:classappend="${activeMenu=='products'} ? 'active'">
+
+                            Sản phẩm
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/admin/variants}"
+                           th:classappend="${activeMenu=='variant'} ? 'active'">
+
+                            Kích cỡ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/admin/options}"
+                           th:classappend="${activeMenu=='option'} ? 'active'">
+
+                            Tùy chọn
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
             <li>
                 <a th:href="@{/admin/users}"

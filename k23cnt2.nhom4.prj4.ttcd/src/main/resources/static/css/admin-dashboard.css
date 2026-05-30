@@ -710,7 +710,21 @@ body{
 
     transition:0.25s;
 }
+.menu-group .submenu{
+    list-style:none;
+    padding-left:20px;
+}
 
+.menu-group .submenu li a{
+    padding:10px 20px;
+    display:block;
+    color:white;
+    font-size:14px;
+}
+
+.menu-group .submenu li a:hover{
+    background:rgba(255,255,255,0.1);
+}
 .quick-btn:hover{
     background:var(--tea-green-hover);
 }
@@ -756,4 +770,39 @@ body{
     .table-container{
         overflow-x:auto;
     }
+}
+.submenu{
+    display:none;
+    list-style:none;
+    padding-left:20px;
+}
+
+.submenu.show{
+    display:block;
+}
+
+.submenu li a{
+
+    display:block;
+
+    padding:10px 15px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+}
+
+.submenu li a:hover{
+    background:#5f4d42;
+}
+
+.submenu li a.active{
+
+    background: var(--tea-green);
+
+    color: var(--coffee-brown);
+
+    font-weight:bold;
 }
