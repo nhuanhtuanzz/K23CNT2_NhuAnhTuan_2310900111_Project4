@@ -47,7 +47,7 @@
                 <!-- STATS -->
                 <div class="stats-grid">
 
-                    <!-- TOTAL ORDERS -->
+                    <!-- Tổng đơn hàng -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -66,7 +66,7 @@
 
                     </div>
 
-                    <!-- REVENUE -->
+                    <!-- Doanh thu -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -77,7 +77,7 @@
 
                             <h3>Doanh thu</h3>
 
-                            <p th:text="${#numbers.formatDecimal(stats.totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' đ'">
+                            <p th:text="${#numbers.formatDecimal(stats.totalRevenue,0,'COMMA',0,'POINT')} + ' đ'">
                                 0 đ
                             </p>
 
@@ -85,18 +85,37 @@
 
                     </div>
 
-                    <!-- NEW CUSTOMERS -->
+                    <!-- Tổng khách hàng -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
-                            <i class="fa-solid fa-user-plus"></i>
+                            <i class="fa-solid fa-users"></i>
                         </div>
 
                         <div class="stat-info">
 
-                            <h3>Khách hàng mới</h3>
+                            <h3>Tổng khách hàng</h3>
 
-                            <p th:text="${stats.newCustomers}">
+                            <p th:text="${stats.totalCustomers}">
+                                0
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Tổng sản phẩm -->
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <h3>Tổng sản phẩm</h3>
+
+                            <p th:text="${stats.totalProducts}">
                                 0
                             </p>
 
@@ -105,11 +124,10 @@
                     </div>
 
                 </div>
-
-                <!-- RECENT ORDERS -->
+                <!-- ĐƠN HÀNG CHỜ XỬ LÝ -->
                 <div class="table-container">
 
-                    <h3>Đơn hàng gần đây</h3>
+                    <h3>Đơn hàng chờ xử lý</h3>
 
                     <table class="data-table">
 
@@ -123,6 +141,8 @@
 
                             <th>Tổng tiền</th>
 
+                            <th>Địa chỉ</th>
+
                             <th>Trạng thái</th>
 
                             <th>Hành động</th>
@@ -134,48 +154,20 @@
                         <tbody>
 
                         <tr th:each="order : ${recentOrders}">
+                            <td th:text="${order.orderCode}"></td>
 
-                            <!-- ORDER ID -->
-                            <td th:text="${order.orderId}"></td>
+                            <td th:text="${order.user.fullName}"></td>
 
-                            <!-- CUSTOMER -->
-                            <td th:text="${order.customerName}"></td>
+                            <td th:text="${order.finalAmount}"></td>
 
-                            <!-- AMOUNT -->
-                            <td th:text="${#numbers.formatDecimal(order.amount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                            <td th:text="${order.orderStatus}"></td>
 
-                            <!-- STATUS -->
                             <td>
-
-                                <span class="badge"
-
-                                      th:classappend="
-                                      ${order.status == 'Hoàn thành'}
-                                      ? 'badge-success'
-                                      : (${order.status == 'Đang pha chế'}
-                                      ? 'badge-warning'
-                                      : 'badge-info')"
-
-                                      th:text="${order.status}">
-
-                                </span>
-
-                            </td>
-
-                            <!-- ACTION -->
-                            <td>
-
                                 <button class="action-btn">
-
-                                    <i class="fa-solid fa-eye"></i>
                                     Chi tiết
-
                                 </button>
-
                             </td>
-
                         </tr>
-
                         </tbody>
 
                     </table>
