@@ -13,7 +13,15 @@ public class AdminOrderApiController {
     @Autowired
     private OrderService orderService;
 
-    // update trạng thái
+    // Lấy chi tiết đơn hàng
+    @GetMapping("/{id}")
+    public Order getOrder(
+            @PathVariable Long id
+    ) {
+        return orderService.getById(id);
+    }
+
+    // Update trạng thái
     @PutMapping("/{id}/status")
     public Order updateStatus(
             @PathVariable Long id,

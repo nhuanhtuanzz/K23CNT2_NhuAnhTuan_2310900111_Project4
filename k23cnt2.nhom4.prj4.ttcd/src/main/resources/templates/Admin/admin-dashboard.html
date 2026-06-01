@@ -124,6 +124,61 @@
                     </div>
 
                 </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <div class="table-container" style="margin-bottom: 30px;">
+                    <h3>Xu hướng doanh thu cửa hàng</h3>
+                    <div style="width: 100%; max-height: 350px; position: relative;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <script th:inline="javascript">
+                    const labelsFromServer = [[${chartLabels}]];
+                    const dataFromServer = [[${chartData}]];
+
+                    const ctx = document.getElementById('revenueChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labelsFromServer,
+                            datasets: [{
+                                label: 'Doanh thu cửa hàng (đ)',
+                                data: dataFromServer,
+                                backgroundColor: 'rgba(197, 216, 164, 0.3)',
+                                borderColor: '#4a3b32',
+                                borderWidth: 3,
+                                tension: 0.3,
+                                fill: true,
+                                pointBackgroundColor: '#4a3b32',
+                                pointRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value.toLocaleString() + ' đ';
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return 'Doanh thu: ' + context.raw.toLocaleString() + ' đ';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                </script>
                 <!-- ĐƠN HÀNG CHỜ XỬ LÝ -->
                 <div class="table-container">
 
@@ -154,19 +209,35 @@
                         <tbody>
 
                         <tr th:each="order : ${recentOrders}">
+
                             <td th:text="${order.orderCode}"></td>
 
                             <td th:text="${order.user.fullName}"></td>
 
-                            <td th:text="${order.finalAmount}"></td>
+                            <td th:text="${#numbers.formatDecimal(order.finalAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
 
-                            <td th:text="${order.orderStatus}"></td>
+                            <td th:text="${order.shippingAddress}"></td>
 
                             <td>
-                                <button class="action-btn">
-                                    Chi tiết
-                                </button>
+
+        <span class="badge badge-warning"
+              th:text="${order.orderStatus}">
+        </span>
+
                             </td>
+
+                            <td>
+
+                                <a class="action-btn"
+                                   th:href="@{/admin/orders/{id}(id=${order.id})}"
+                                   style="text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center;">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
                         </tr>
                         </tbody>
 
@@ -190,7 +261,7 @@
 
                         </a>
 
-                        <a href="#"
+                        <a th:href="@{/admin/users}"
                            class="quick-btn">
 
                             <i class="fa-solid fa-users"></i>
@@ -198,7 +269,7 @@
 
                         </a>
 
-                        <a href="#"
+                        <a th:href="@{/admin/orders}"
                            class="quick-btn">
 
                             <i class="fa-solid fa-receipt"></i>
@@ -218,7 +289,6 @@
 
 </th:block>
 
-<script th:src="@{/js/admin-dashboard.js}"></script>
 
 </body>
 

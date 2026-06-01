@@ -25,26 +25,18 @@
 
     <div class="dashboard-container">
 
-        <!-- SIDEBAR -->
         <div th:replace="~{Admin/layout/sidebar :: sidebar}"></div>
 
-        <!-- MAIN -->
         <div class="main-wrapper">
 
-            <!-- NAVBAR -->
             <div th:replace="~{Admin/layout/navbar :: navbar}"></div>
 
-            <!-- CONTENT -->
             <main class="main-content">
 
-                <!-- HEADER -->
                 <div class="content-header">
-
                     <h1>Quản lý đơn hàng</h1>
-
                 </div>
 
-                <!-- TABLE -->
                 <div class="table-container">
 
                     <h3>Danh sách đơn hàng</h3>
@@ -54,25 +46,14 @@
                         <thead>
 
                         <tr>
-
                             <th>ID</th>
-
                             <th>Mã đơn</th>
-
                             <th>Khách hàng</th>
-
                             <th>Tổng tiền</th>
-
                             <th>Giảm giá</th>
-
                             <th>Thanh toán</th>
-
                             <th>Trạng thái</th>
-
-                            <th>Ngày tạo</th>
-
                             <th>Hành động</th>
-
                         </tr>
 
                         </thead>
@@ -81,25 +62,18 @@
 
                         <tr th:each="order : ${orders}">
 
-                            <!-- ID -->
                             <td th:text="${order.id}"></td>
 
-                            <!-- ORDER CODE -->
                             <td th:text="${order.orderCode}"></td>
 
-                            <!-- USER -->
                             <td th:text="${order.user.fullName}"></td>
 
-                            <!-- TOTAL -->
                             <td th:text="${#numbers.formatDecimal(order.totalAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
 
-                            <!-- DISCOUNT -->
                             <td th:text="${#numbers.formatDecimal(order.discountAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
 
-                            <!-- FINAL -->
                             <td th:text="${#numbers.formatDecimal(order.finalAmount,0,'COMMA',0,'POINT')} + ' đ'"></td>
 
-                            <!-- STATUS -->
                             <td>
 
                                 <span class="badge"
@@ -117,23 +91,23 @@
 
                             </td>
 
-                            <!-- CREATED -->
-                            <td th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
-
-                            <!-- ACTION -->
                             <td>
 
+                                <!-- Xem chi tiết -->
+                                <a class="action-btn"
+                                   th:href="@{/admin/orders/{id}(id=${order.id})}"
+                                   style="text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+
+                                <!-- Đổi trạng thái -->
                                 <select class="status-select"
                                         th:onchange="'updateOrderStatus(' + ${order.id} + ', this.value)'">
 
                                     <option th:each="status : ${statuses}"
-
                                             th:value="${status}"
-
                                             th:text="${status}"
-
                                             th:selected="${status == order.orderStatus}">
-
                                     </option>
 
                                 </select>
@@ -157,37 +131,7 @@
 </th:block>
 
 <script th:src="@{/js/admin-orders.js}"></script>
-<div class="modal"
-     id="orderDetailModal">
 
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <h2>
-                Chi tiết đơn hàng
-            </h2>
-
-            <span class="close-btn"
-                  onclick="closeOrderDetailModal()">
-
-                &times;
-
-            </span>
-
-        </div>
-
-        <div class="modal-body">
-
-            <div id="orderItemsContainer">
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
 </body>
 
 </html>

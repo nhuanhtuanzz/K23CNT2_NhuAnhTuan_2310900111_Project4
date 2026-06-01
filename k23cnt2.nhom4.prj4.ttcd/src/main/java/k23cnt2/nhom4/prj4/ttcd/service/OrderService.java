@@ -21,11 +21,13 @@ public class OrderService {
     }
 
     // lấy theo id
-    public Order getOrderById(Long id) {
+    public Order getById(Long id){
 
-        return orderRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Không tìm thấy đơn hàng"));
+        return orderRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new RuntimeException("Không tìm thấy đơn hàng")
+                );
     }
 
     // cập nhật trạng thái
@@ -34,7 +36,7 @@ public class OrderService {
             ENUMS.OrderStatus status
     ) {
 
-        Order order = getOrderById(id);
+        Order order = getById(id);
 
         order.setOrderStatus(status);
 

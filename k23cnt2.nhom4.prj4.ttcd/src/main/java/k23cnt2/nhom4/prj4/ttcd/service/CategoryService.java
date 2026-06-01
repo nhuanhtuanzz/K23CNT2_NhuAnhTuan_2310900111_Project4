@@ -4,10 +4,13 @@ import k23cnt2.nhom4.prj4.ttcd.entity.Category;
 import k23cnt2.nhom4.prj4.ttcd.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CategoryService {
 
     @Autowired
@@ -22,22 +25,46 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục"));
     }
 
-    public Category createCategory(Category category) {
+    @Transactional
+    public Category createCategoryWithImage(String name, String slug, MultipartFile imageFile) {
+        if (categoryRepository.existsBySlug(slug)) {
+            throw new RuntimeException("Slug danh mục đã tồn tại!");
+        }
+
+        Category category = new Category();
+        category.setName(name);
+        category.setSlug(slug);
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = "/images/categories/" + imageFile.getOriginalFilename();
+            category.setImageUrl(imageUrl);
+        } else {
+            category.setImageUrl("/images/categories/default.png");
+        }
+
         return categoryRepository.save(category);
     }
 
-    public Category updateCategory(Integer id, Category category) {
+    @Transactional
+    public Category updateCategoryWithImage(Integer id, String name, String slug, MultipartFile imageFile) {
+        Category category = getCategoryById(id);
 
-        Category oldCategory = getCategoryById(id);
+        category.setName(name);
+        category.setSlug(slug);
 
-        oldCategory.setName(category.getName());
-        oldCategory.setSlug(category.getSlug());
-        oldCategory.setImageUrl(category.getImageUrl());
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = "/images/categories/" + imageFile.getOriginalFilename();
+            category.setImageUrl(imageUrl);
+        }
 
-        return categoryRepository.save(oldCategory);
+        return categoryRepository.save(category);
     }
 
+    @Transactional
     public void deleteCategory(Integer id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new RuntimeException("Danh mục không tồn tại hoặc đã bị xóa trước đó!");
+        }
         categoryRepository.deleteById(id);
     }
 }

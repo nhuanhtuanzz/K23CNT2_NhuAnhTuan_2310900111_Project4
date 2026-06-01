@@ -561,68 +561,6 @@ body{
     font-weight:600;
 }
 
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-
-    display:none;
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
-
-    background:rgba(0,0,0,0.5);
-
-    justify-content:center;
-    align-items:center;
-
-    z-index:9999;
-}
-
-.modal-content{
-
-    width:500px;
-
-    background:white;
-
-    border-radius:15px;
-
-    padding:25px;
-}
-
-.modal-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:20px;
-}
-
-.close-btn{
-
-    background:none;
-    border:none;
-
-    font-size:28px;
-
-    cursor:pointer;
-}
-
-.modal-body{
-
-    display:flex;
-    flex-direction:column;
-
-    gap:16px;
-}
-
 .form-group{
     display:flex;
     flex-direction:column;
@@ -794,10 +732,11 @@ body{
     font-size:14px;
 }
 
-.submenu li a:hover{
-    background:#5f4d42;
+.submenu li a:hover {
+    background: var(--tea-green);
+    color: var(--coffee-brown);
+    font-weight: 600;
 }
-
 .submenu li a.active{
 
     background: var(--tea-green);
@@ -805,4 +744,65 @@ body{
     color: var(--coffee-brown);
 
     font-weight:bold;
+}
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    background:#fff;
+    width:800px;
+    max-width:90%;
+    border-radius:10px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close-btn{
+    font-size:28px;
+    cursor:pointer;
+}
+.status-toggle-btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: #white;
+}
+
+.btn-to-hide {
+    background-color: #e74c3c;
+    color: white;
+}
+.btn-to-hide:hover {
+    background-color: #c0392b;
+}
+
+.btn-to-active {
+    background-color: #2ecc71; /* Màu xanh lá */
+    color: white;
+}
+.btn-to-active:hover {
+    background-color: #27ae60;
 }

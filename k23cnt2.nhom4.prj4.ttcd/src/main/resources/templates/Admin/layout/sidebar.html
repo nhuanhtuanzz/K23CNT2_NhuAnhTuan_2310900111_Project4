@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi"
       xmlns:th="http://www.thymeleaf.org">
-
 <body>
 
 <div th:fragment="sidebar">
-
     <aside class="sidebar">
 
         <div class="sidebar-brand">
@@ -16,92 +14,61 @@
         </div>
 
         <ul class="sidebar-menu">
-
             <li>
                 <a th:href="@{/admin-dashboard}"
                    th:classappend="${activeMenu == 'dashboard'} ? 'active'">
-
                     <i class="fa-solid fa-chart-pie"></i>
-                    Dashboard
+                    <span>Dashboard</span>
                 </a>
             </li>
+
             <li>
-
-                <a href="#"
-                   onclick="toggleProductMenu()">
-
-                    <i class="fa-solid fa-box"></i>
-
-                    <span>sản phẩm</span>
-
+                <a href="/admin/products" onclick="toggleProductMenu()">
+                    <i class="fa-solid fa-box" style="pointer-events: none;"></i>
+                    <span style="pointer-events: none;">Sản phẩm</span>
                 </a>
 
-                <ul id="productSubmenu"
-                    class="submenu"
-
-                    th:classappend="
-            ${activeMenu=='products'}
-            or ${activeMenu=='category'}
-            or ${activeMenu=='variant'}
-            or ${activeMenu=='option'}
-            ? 'show'">
-
+                <ul id="productSubmenu" class="submenu"
+                    th:classappend="${activeMenu=='products' or activeMenu=='category' or activeMenu=='variant' or activeMenu=='option'} ? 'show'">
                     <li>
-                        <a th:href="@{/admin/categories}"
-                           th:classappend="${activeMenu=='category'} ? 'active'">
-
+                        <a th:href="@{/admin/categories}" th:classappend="${activeMenu=='category'} ? 'active'">
                             Danh mục
                         </a>
                     </li>
-
                     <li>
-                        <a th:href="@{/admin/products}"
-                           th:classappend="${activeMenu=='products'} ? 'active'">
-
+                        <a th:href="@{/admin/products}" th:classappend="${activeMenu=='products'} ? 'active'">
                             Đồ uống
                         </a>
                     </li>
-
                     <li>
-                        <a th:href="@{/admin/variants}"
-                           th:classappend="${activeMenu=='variant'} ? 'active'">
-
+                        <a th:href="@{/admin/variants}" th:classappend="${activeMenu=='variant'} ? 'active'">
                             Kích cỡ
                         </a>
                     </li>
-
                     <li>
-                        <a th:href="@{/admin/options}"
-                           th:classappend="${activeMenu=='option'} ? 'active'">
-
+                        <a th:href="@{/admin/options}" th:classappend="${activeMenu=='option'} ? 'active'">
                             Tùy chọn
                         </a>
                     </li>
-
                 </ul>
-
             </li>
-            <li>
-                <a th:href="@{/admin/users}"
-                   th:classappend="${activeMenu == 'users'} ? 'active'">
 
+            <li>
+                <a th:href="@{/admin/users}" th:classappend="${activeMenu == 'users'} ? 'active'">
                     <i class="fa-solid fa-users"></i>
-                    Người dùng
-
+                    <span>Người dùng</span>
                 </a>
             </li>
+
             <li>
-                <a th:href="@{/admin/orders}"
-                   th:classappend="${activeMenu == 'orders'} ? 'active'">
-
+                <a th:href="@{/admin/orders}" th:classappend="${activeMenu == 'orders'} ? 'active'">
                     <i class="fa-solid fa-receipt"></i>
-                    Đơn hàng
-
+                    <span>Đơn hàng</span>
                 </a>
+            </li>
         </ul>
 
     </aside>
-
 </div>
 
 </body>

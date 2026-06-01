@@ -93,18 +93,27 @@
 
                             <td>
 
-                                <button class="edit-btn">
+                                <button class="edit-btn"
+
+                                        th:attr="
+        data-id=${variant.id},
+        data-product=${variant.product.id},
+        data-size=${variant.sizeName},
+        data-price=${variant.extraPrice}"
+
+                                        onclick="openEditModal(this)">
 
                                     <i class="fa-solid fa-pen"></i>
 
                                 </button>
 
-                                <button class="delete-btn">
+                                <button class="delete-btn"
+
+                                        th:onclick="'deleteVariant(' + ${variant.id} + ')'">
 
                                     <i class="fa-solid fa-trash"></i>
 
                                 </button>
-
                             </td>
 
                         </tr>
@@ -122,7 +131,78 @@
     </div>
 
 </th:block>
+<div class="modal" id="variantModal">
 
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Thêm kích cỡ
+            </h2>
+
+            <span class="close-btn"
+                  onclick="closeModal()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div class="modal-body">
+
+            <input type="hidden"
+                   id="variantId">
+
+            <div class="form-group">
+
+                <label>Sản phẩm</label>
+
+                <select id="productId">
+
+                    <option th:each="product : ${products}"
+                            th:value="${product.id}"
+                            th:text="${product.name}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Size</label>
+
+                <input type="text"
+                       id="sizeName">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Phụ thu</label>
+
+                <input type="number"
+                       id="extraPrice">
+
+            </div>
+
+            <button class="save-btn"
+                    onclick="saveVariant()">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Lưu
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<script th:src="@{/js/admin-variant.js}"></script>
 </body>
 
 </html>

@@ -2,6 +2,10 @@ package k23cnt2.nhom4.prj4.ttcd.controller;
 
 import k23cnt2.nhom4.prj4.ttcd.entity.Category;
 import k23cnt2.nhom4.prj4.ttcd.entity.Product;
+import k23cnt2.nhom4.prj4.ttcd.repository.CategoryRepository;
+import k23cnt2.nhom4.prj4.ttcd.repository.ProductOptionRepository;
+import k23cnt2.nhom4.prj4.ttcd.repository.ProductRepository;
+import k23cnt2.nhom4.prj4.ttcd.repository.ProductVariantRepository;
 import k23cnt2.nhom4.prj4.ttcd.service.CategoryService;
 import k23cnt2.nhom4.prj4.ttcd.service.ProductService;
 
@@ -23,27 +27,48 @@ import java.util.List;
 public class AdminProductController {
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductVariantRepository productVariantRepository;
+
+    @Autowired
+    private ProductOptionRepository productOptionRepository;
+
+    @Autowired
     private ProductService productService;
 
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/admin/products")
-    public String productsPage(Model model) {
+    public String productPage(Model model){
 
-        List<Product> products =
-                productService.getAllProducts();
-
-        model.addAttribute("products", products);
+        model.addAttribute(
+                "products",
+                productRepository.findAll()
+        );
 
         model.addAttribute(
                 "categories",
-                categoryService.getAllCategories()
+                categoryRepository.findAll()
+        );
+
+        model.addAttribute(
+                "variants",
+                productVariantRepository.findAll()
+        );
+
+        model.addAttribute(
+                "options",
+                productOptionRepository.findAll()
         );
 
         return "Admin/admin-products";
     }
-
     @PostMapping("/admin/products/save")
     public String saveProduct(
 

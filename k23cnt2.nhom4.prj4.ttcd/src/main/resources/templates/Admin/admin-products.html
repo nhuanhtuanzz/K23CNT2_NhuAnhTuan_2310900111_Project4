@@ -3,22 +3,15 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta th:name="_csrf" th:content="${_csrf?.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf?.headerName}"/>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Sản Phẩm</title>
-
-    <link rel="stylesheet"
-          th:href="@{/css/admin-dashboard.css}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
 
 <th:block th:with="activeMenu='products'">
@@ -146,15 +139,12 @@
 
                                 </button>
 
-                                <!-- DELETE -->
-                                <button class="delete-btn"
-
-                                        th:onclick="'deleteProduct(' + ${product.id} + ')'">
-
-                                    <i class="fa-solid fa-trash"></i>
-
+                                <button type="button"
+                                        style="width: 36px; height: 36px; inline-size: 36px; text-align: center; padding: 0;"
+                                        th:classappend="${product.isActive} ? 'delete-btn' : 'add-btn'"
+                                        th:onclick="|toggleStatus(${product.id}, ${product.isActive})|">
+                                    <i class="fa-solid" th:classappend="${product.isActive} ? 'fa-eye-slash' : 'fa-eye'"></i>
                                 </button>
-
                             </td>
 
                         </tr>
@@ -265,8 +255,27 @@
                        placeholder="45000">
 
             </div>
+            <div class="form-group">
 
-            <!-- DESCRIPTION -->
+                <label>Kích cỡ áp dụng</label>
+
+                <div class="checkbox-group">
+
+                    <label th:each="variant : ${variants}">
+
+                        <input type="checkbox"
+                               name="variantIds"
+                               th:value="${variant.id}">
+
+                        <span th:text="${variant.sizeName + ' (+' + variant.extraPrice + 'đ)'}">
+            </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
             <div class="form-group">
 
                 <label>Mô tả</label>
